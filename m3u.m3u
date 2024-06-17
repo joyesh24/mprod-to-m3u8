@@ -1,0 +1,33 @@
+from urllib.parse import urlparse, parse_qs
+
+def convert_mprod_to_m3u8(https://mprod-cdn.toffeelive.com/live/match-2/index.m3u8?%7CCookie=Edge-Cache-Cookie=URLPrefix=aHR0cHM6Ly9tcHJvZC1jZG4udG9mZmVlbGl2ZS5jb20v:Expires=1718395383:KeyName=prod_live_events:Signature=G8_yel7TyZ1ajGPbo4gNYuEP9SSFMRk5oeIm7X-nX2mgkxAQZmQDL5ueBUWxMJbLbW9RSXTjM9Wp0uhB8lzSBA):
+    # Parse the mprod link
+    parsed_url = urlparse(https://mprod-cdn.toffeelive.com/live/match-2/index.m3u8?%7CCookie=Edge-Cache-Cookie=URLPrefix=aHR0cHM6Ly9tcHJvZC1jZG4udG9mZmVlbGl2ZS5jb20v:Expires=1718395383:KeyName=prod_live_events:Signature=G8_yel7TyZ1ajGPbo4gNYuEP9SSFMRk5oeIm7X-nX2mgkxAQZmQDL5ueBUWxMJbLbW9RSXTjM9Wp0uhB8lzSBA)
+    query_params = parse_qs(%7CCookie=Edge-Cache-Cookie=URLPrefix=aHR0cHM6Ly9tcHJvZC1jZG4udG9mZmVlbGl2ZS5jb20v:Expires=1718395383:KeyName=prod_live_events:Signature=G8_yel7TyZ1ajGPbo4gNYuEP9SSFMRk5oeIm7X-nX2mgkxAQZmQDL5ueBUWxMJbLbW9RSXTjM9Wp0uhB8lzSBA)
+
+    # Extract channel ID and token
+    channel_id = query_params.get('channel', [None])[0]
+    token = query_params.get('token', [None])[0]
+
+    # Generate the m3u8 URL
+    if channel_id and token:
+        m3u8_url = f"http://streaming.example.com/live/{channel_id}/index.m3u8?token={token}"
+        print("Generated m3u8 URL:", m3u8_url)
+
+        # Create M3U8 content
+        m3u8_content = f"""#EXTM3U
+#EXTINF:-1, Channel {channel_id}
+{m3u8_url}
+"""
+        # Save to file
+        playlist_filename = "playlist.m3u8"
+        with open(playlist_filename, "w") as file:
+            file.write(m3u8_content)
+
+        print(f"M3U8 playlist generated: {playlist_filename}")
+    else:
+        print("Invalid mprod link")
+
+# Example mprod link
+mprod_link = "http://example.com/mprod?channel=1234&token=abcd"
+convert_mprod_to_m3u8(mprod_link)
